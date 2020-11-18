@@ -66,7 +66,11 @@
 #     root.geometry('100x400')
 #     root.mainloop()
 
+from datetime import datetime, timedelta
+
 # Crear una clase en Python:
+
+
 class Reloj():
     # Definición de atributos (propiedades)
     numerals = []
@@ -146,3 +150,49 @@ otro_reloj.get_hour()
 # hora_madrid = Reloj()
 # hora_madrid.set_city('Madrid')
 # hora_madrid.get_hour()  # La hora en Madrid es: 18:31:55
+
+
+class Clock():
+    city = ''
+    time_zone = 0
+    cities = {
+        'Madrid': 7,
+        'Nueva York': 1,
+        'Tokio': 15,
+        'Moscú': 9
+    }
+
+    # Método constructor
+    def __init__(self, city):
+        if not (city) in self.cities:
+            self.city = 'mx'
+        else:
+            self.city = city
+
+    def get_hour(self):
+        local_time = datetime.now()
+        if self.city == 'mx':
+            print(
+                f'La hora en México es {local_time.hour}:{local_time.minute}:{local_time.second}')
+        else:
+            delta = self.cities[self.city]
+            time_zone = timedelta(hours=delta)
+            city_time = local_time + time_zone
+            print(
+                f'La hora en {self.city} es {city_time.hour}:{city_time.minute}:{city_time.second}')
+
+
+moscu = Clock('Moscú')
+moscu.get_hour()
+
+new_york = Clock('Nueva York')
+new_york.get_hour()
+
+tokyo = Clock('Tokio')
+tokyo.get_hour()
+
+madrid = Clock('Madrid')
+madrid.get_hour()
+
+mx = Clock('mx')
+mx.get_hour()
