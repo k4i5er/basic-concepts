@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from tkinter import Tk, TOP, X
-from tkinter.ttk import Label, Entry, Button, Frame
+from tkinter.ttk import Label, Entry, Button, Frame, Combobox
 
 # Misión:
 # Crear una clase que permita crear relojes con distintos husos horarios para las siguientes
@@ -31,7 +31,7 @@ class Clock():
 
     def get_hour(self):
         local_time = datetime.now()
-        if self.city == 'México':
+        if self.city == 'México' or str(combo_cities.get()) == '':
             return f'La hora en México es {local_time.hour}:{local_time.minute}:{local_time.second}'
         else:
             delta = self.cities[self.city]
@@ -46,11 +46,34 @@ class Clock():
 my_clock = Clock()
 
 
-def show_clock():
+# def show_clock():
+
+
+def update_clock(event):
+    print(str(combo_cities.get()))
     lbl_clock = Label(frm_clock)
-    my_clock.set_city(str(entry_city.get()))  # setter
+    my_clock.set_city(str(combo_cities.get()))  # setter
     lbl_clock.configure(text=my_clock.get_hour())  # getter
     lbl_clock.pack(side=TOP)
+
+
+def add_new_city():
+    values = list(combo_cities['values'])
+    combo_cities['values'] = values + [str(entry_city.get())]
+    print(combo_cities.current())
+
+
+def delete_city():
+    values = list(combo_cities['values'])
+    values.remove(str(entry_city_del.get()))
+    combo_cities['values'] = values
+
+
+def update_city():
+    values = list(combo_cities['values'])
+    values[values.index(combo_cities.get())] = entry_city_update.get()
+    combo_cities['values'] = values
+    print(combo_cities.current())
 
 
 root = Tk()
@@ -61,11 +84,35 @@ frm_city = Frame(root)
 lbl_write_city = Label(
     root, text="Escribe una ciudad (Madrid, Moscú, México, Nueva York, Tokio)")
 lbl_write_city.pack(side=TOP)
-entry_city = Entry(frm_city)
-entry_city.pack(side=TOP, fill=X, expand=1)
-btn_set_city = Button(text='Ver hora', command=show_clock)
-btn_set_city.pack(side=TOP, after=entry_city)
+
+# Wiget Combobox
+combo_cities = Combobox(frm_city, state='readonly')
+combo_cities['values'] = ('Madrid', 'México', 'Moscú', 'Nueva York', 'Tokio')
+combo_cities.current(1)
+combo_cities.bind('<<ComboboxSelected>>', update_clock)
+combo_cities.pack()
+
+# btn_set_city = Button(text='Ver hora', command=show_clock)
+# btn_set_city.pack(side=TOP, after=combo_cities)
 frm_city.pack(fill=X)
+
+entry_city = Entry(root)
+entry_city.pack(side=TOP, fill=X, expand=1)
+btn_add_new_city = Button(
+    root, text='Agregar nueva ciudad', command=add_new_city)
+btn_add_new_city.pack()
+
+entry_city_del = Entry(root)
+entry_city_del.pack(side=TOP, fill=X, expand=1)
+btn_del_new_city = Button(
+    root, text='Eliminar ciudad', command=delete_city)
+btn_del_new_city.pack()
+
+entry_city_update = Entry(root)
+entry_city_update.pack(side=TOP, fill=X, expand=1)
+btn_update_new_city = Button(
+    root, text='Actualizar nombre de ciudad', command=update_city)
+btn_update_new_city.pack()
 
 frm_clock = Frame(root)
 
