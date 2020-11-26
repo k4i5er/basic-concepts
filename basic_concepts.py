@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from tkinter import Tk, TOP, X
-from tkinter.ttk import Label, Entry, Button, Frame, Combobox
+from tkinter import Tk, TOP, X, IntVar, StringVar
+from tkinter.ttk import Label, Entry, Button, Frame, Combobox, Radiobutton
 
 # Misión:
 # Crear una clase que permita crear relojes con distintos husos horarios para las siguientes
@@ -57,19 +57,19 @@ def update_clock(event):
     lbl_clock.pack(side=TOP)
 
 
-def add_new_city():
+def add_new_city(event):
     values = list(combo_cities['values'])
     combo_cities['values'] = values + [str(entry_city.get())]
     print(combo_cities.current())
 
 
-def delete_city():
+def delete_city(event):
     values = list(combo_cities['values'])
     values.remove(str(entry_city_del.get()))
     combo_cities['values'] = values
 
 
-def update_city():
+def update_city(event):
     values = list(combo_cities['values'])
     values[values.index(combo_cities.get())] = entry_city_update.get()
     combo_cities['values'] = values
@@ -96,23 +96,48 @@ combo_cities.pack()
 # btn_set_city.pack(side=TOP, after=combo_cities)
 frm_city.pack(fill=X)
 
+Label(root, text="Escribe el nombre de la ciudad a agregar y presiona <Enter>").pack()
 entry_city = Entry(root)
+entry_city.bind('<Return>', add_new_city)
 entry_city.pack(side=TOP, fill=X, expand=1)
-btn_add_new_city = Button(
-    root, text='Agregar nueva ciudad', command=add_new_city)
-btn_add_new_city.pack()
+# btn_add_new_city = Button(
+#     root, text='Agregar nueva ciudad', command=add_new_city)
+# btn_add_new_city.pack()
 
+Label(root, text="Escribe el nombre de la ciudad a eliminar y presiona <Enter>").pack()
 entry_city_del = Entry(root)
+entry_city_del.bind('<Return>', delete_city)
 entry_city_del.pack(side=TOP, fill=X, expand=1)
-btn_del_new_city = Button(
-    root, text='Eliminar ciudad', command=delete_city)
-btn_del_new_city.pack()
+# btn_del_new_city = Button(
+#     root, text='Eliminar ciudad', command=delete_city)
+# btn_del_new_city.pack()
 
+Label(root, text="Escribe el nombre de la ciudad a actualizar y presiona <Enter>").pack()
 entry_city_update = Entry(root)
+entry_city_update.bind('<Return>', update_city)
 entry_city_update.pack(side=TOP, fill=X, expand=1)
-btn_update_new_city = Button(
-    root, text='Actualizar nombre de ciudad', command=update_city)
-btn_update_new_city.pack()
+# btn_update_new_city = Button(
+#     root, text='Actualizar nombre de ciudad', command=update_city)
+# btn_update_new_city.pack()
+
+
+def show_selected():
+    if opt.get() == 0:
+        print(f'Buenos dias!')
+    else:
+        print(f'Buenas tardes!')
+
+
+opt = IntVar()
+# opt2 = IntVar()
+# Widget Radiobutton
+rad_am = Radiobutton(root, text='am', value=0,
+                     command=show_selected, variable=opt)
+rad_am.pack()
+rad_pm = Radiobutton(root, text='pm', value=1,
+                     command=show_selected, variable=opt)
+rad_pm.pack()
+
 
 frm_clock = Frame(root)
 
