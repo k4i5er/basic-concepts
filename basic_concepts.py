@@ -1,15 +1,6 @@
 from datetime import datetime, timedelta
-from tkinter import Tk, TOP, X, IntVar, StringVar
-from tkinter.ttk import Label, Entry, Button, Frame, Combobox, Radiobutton
-
-# Misión:
-# Crear una clase que permita crear relojes con distintos husos horarios para las siguientes
-# ciudades:
-# Madrid, Tokio, Moscú, Centro de la CDMX, Nueva York
-# y que permita visualizar la hora actual CORRECTA de las distintas ciudades
-# hora_madrid = Reloj()
-# hora_madrid.set_city('Madrid')
-# hora_madrid.get_hour()  # La hora en Madrid es: 18:31:55
+from tkinter import Tk, TOP, X, IntVar, StringVar, BooleanVar
+from tkinter.ttk import Label, Entry, Button, Frame, Combobox, Radiobutton, Checkbutton
 
 
 class Clock():
@@ -41,6 +32,32 @@ class Clock():
 
     def set_city(self, city_name):
         self.city = city_name
+
+
+class Alarm():
+    sound = ['ringbell', 'doorbell', 'Forest melody']
+    duration = 0
+    blink = True
+    name = ''
+    interval = 0
+
+    def turn_on(self):
+      # Enciende la alarma
+
+    def turn_off(self):
+      # Apaga la alarma
+
+    def set_alarm(self):
+      # Configura una nueva alarma
+
+    def del_alarm(self):
+      # Elimina una alarma
+
+    def modify_alarm(self, alarm):
+      # Modifica parámetros de una alarma existente
+
+    def suspend(self, minutes):
+      # Suspende la alarma por 'minutes' minutos
 
 
 my_clock = Clock()
@@ -123,24 +140,68 @@ entry_city_update.pack(side=TOP, fill=X, expand=1)
 
 def show_selected():
     if opt.get() == 0:
-        print(f'Buenos dias!')
+        # print(f'Buenos dias!')
+        frm_sports.pack()
+        # hard coding
+        op1_value.set(False)
+        op2_value.set(False)
+        op3_value.set(False)
+        op4_value.set(False)
     else:
-        print(f'Buenas tardes!')
+        # print(f'Buenas tardes!')
+        frm_sports.pack_forget()
 
 
 opt = IntVar()
-# opt2 = IntVar()
 # Widget Radiobutton
-rad_am = Radiobutton(root, text='am', value=0,
+Label(root, text='¿Te gustan los deportes?').pack()
+rad_am = Radiobutton(root, text='Sí', value=0,
                      command=show_selected, variable=opt)
 rad_am.pack()
-rad_pm = Radiobutton(root, text='pm', value=1,
+rad_pm = Radiobutton(root, text='No', value=1,
                      command=show_selected, variable=opt)
 rad_pm.pack()
 
+# Widget Checkbox (Checkbutton)
+
+
+def show_check_selected():
+    if op1_value.get():
+        print('Opción 1 está seleccionada')
+    else:
+        print('Opción 1 NO está seleccionada')
+    if op2_value.get():
+        print('Opción 2 está seleccionada')
+    else:
+        print('Opción 2 NO está seleccionada')
+
+
+op1_value = BooleanVar()
+op2_value = BooleanVar()
+op3_value = BooleanVar()
+op4_value = BooleanVar()
+
+print(op1_value, op2_value)
+frm_sports = Frame(root)
+Label(frm_sports, text='Selecciona todos tus deportes preferidos:').pack()
+chk_op1 = Checkbutton(frm_sports, text='Fútbol', var=op1_value,
+                      command=show_check_selected)
+chk_op1.pack()
+
+chk_op2 = Checkbutton(frm_sports, text='Básquetbol', var=op2_value,
+                      command=show_check_selected)
+chk_op2.pack()
+
+chk_op3 = Checkbutton(frm_sports, text='Béisbol', var=op3_value,
+                      command=show_check_selected)
+chk_op3.pack()
+
+chk_op4 = Checkbutton(frm_sports, text='Golf', var=op4_value,
+                      command=show_check_selected)
+chk_op4.pack()
+
 
 frm_clock = Frame(root)
-
 frm_clock.pack(fill=X)
 
 root.mainloop()
